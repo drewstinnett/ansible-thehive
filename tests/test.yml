@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: True
+  roles:
+    - ansible-cortex
+    - role: ansible-cortex
