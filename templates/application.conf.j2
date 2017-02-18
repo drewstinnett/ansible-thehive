@@ -8,7 +8,7 @@ analyzer {
   path = "{{ cortex.install_prefix }}/{{ cortex.analyzer.path }}"
 
   config {
-  {% if analyzers %}
+  {% if analyzers is defined %}
   {% for analyzer, config in cortex.analyzers.iteritems() -%}
   {{ analyzer }} {
       {% for k, v in config.iteritems() -%}
