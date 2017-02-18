@@ -3,8 +3,19 @@
 - name: Install python-pip
   package: name=python-pip state=present
 
-- name: Install Java
+
+- name: Install Java for RHEL Dists
   package: name=java-1.8.0-openjdk state=present
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Add apt repository for openjdk
+  apt_repository:
+    repo: 'ppa:openjdk-r/ppa'
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install Java for Ubuntu Dists
+  package: name=openjdk-8-jre-headless state=present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Create cortex group
   group:
