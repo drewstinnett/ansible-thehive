@@ -1,0 +1,17 @@
+- name: restart cortex
+  service: name=cortex state=restarted
+  notify: wait for the service to come up
+
+- name: reload systemd
+  shell: systemctl daemon-reload
+
+- name: wait for the service to come up
+  wait_for: port={{ cortex.http.port }} timeout=30
+
+- name: chown cortex directory
+  file:
+    dest: "{{ cortex.install_prefix }}/cortex-{{ cortex.version }}"
+    state: directory
+    owner: cortex
+    group: cortex
+    recurse: yes
