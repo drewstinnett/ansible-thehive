@@ -1,0 +1,34 @@
+galaxy_info:
+  author: Drew Stinnett
+  description: Deploy an instance of a cortex analyzer.
+  company: Duke University
+
+  # If the issue tracker for your role is not on github, uncomment the
+  # next line and provide a value
+  issue_tracker_url: https://github.com/drewstinnett/ansible-cortex/issues
+
+  # Some suggested licenses:
+  # - BSD (default)
+  # - MIT
+  # - GPLv2
+  # - GPLv3
+  # - Apache
+  # - CC-BY
+  license: BSD
+
+  min_ansible_version: 2.0
+
+  platforms:
+    - name: EL
+      versions:
+       - 6
+       - 7
+    - name: Ubuntu
+      versions:
+       - xenial
+       - trusty
+  galaxy_tags:
+    - cortex
+    - thehive
+
+dependencies: []
