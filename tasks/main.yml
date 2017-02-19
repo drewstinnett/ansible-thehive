@@ -6,6 +6,10 @@
     - python-pip
     - unzip
 
+- name: Install PyCurl
+  apt: name=python-pycurl state=present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
 
 - name: Install Java for RHEL Dists
   package: name=java-1.8.0-openjdk state=present
@@ -97,7 +101,7 @@
     state: directory
     mode: 0770
 
-- name: Copy in init script for Cortex
+- name: Copy in systemd init script for Cortex
   template:
     src: 'cortex.service.j2'
     dest: /usr/lib/systemd/system/cortex.service
