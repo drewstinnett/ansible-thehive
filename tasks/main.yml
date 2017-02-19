@@ -126,4 +126,4 @@
 
 - name: Enable services for upstart
   service: name=cortex state=started enabled=true
-  when: ansible_service_mgr == 'systemd'
+  when: ansible_service_mgr == 'upstart'
