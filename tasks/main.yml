@@ -120,5 +120,10 @@
     dest: '/etc/cortex/application.conf'
   notify: restart cortex
 
-- name: Enable services
+- name: Enable services for systemd
   service: name=cortex state=started enabled=true daemon_reload=yes
+  when: ansible_service_mgr == 'systemd'
+
+- name: Enable services for upstart
+  service: name=cortex state=started enabled=true
+  when: ansible_service_mgr == 'systemd'
