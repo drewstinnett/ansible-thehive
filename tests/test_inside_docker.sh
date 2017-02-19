@@ -43,4 +43,5 @@ docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/${modul
 || (echo 'Idempotence test: fail' && exit 1) \
 
 # Clean up
-#docker stop "$(cat ${container_id})"
+docker stop "$(cat ${container_id})"
+docker rm -v "$(cat ${container_id})"
