@@ -15,7 +15,6 @@ env DAEMON={{ cortex.install_prefix }}/cortex/bin/cortex
 env PIDFILE=/var/run/cortex.pid
 env DAEMONUSER=cortex
 env CONFIGFILE=/etc/cortex/application.conf
-env LISTENPORT={{ cortex.http.port }}
 env DAEMON_OPTS=
 env DEFAULTFILE=/etc/default/cortex
 
@@ -45,5 +44,5 @@ end script
 
 script
     cd $(dirname $DAEMON)/..
-    $DAEMON -Dconfig.file=$CONFIGFILE -Dhttp.port=$LISTENPORT -Dhttp.address={{ cortex.http.address }} -Dpidfile.path=$PIDFILE $DAEMON_OPTS
+    $DAEMON -Dconfig.file=$CONFIGFILE -Dhttp.port={{ cortex.http.port }} -Dhttp.address={{ cortex.http.address }} -Dpidfile.path=$PIDFILE $DAEMON_OPTS
 end script

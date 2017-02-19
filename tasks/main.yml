@@ -5,6 +5,7 @@
   with_items:
     - python-pip
     - unzip
+    - git
 
 - name: Install PyCurl
   apt: name=python-pycurl state=present
@@ -85,7 +86,14 @@
     dest: "{{ cortex.install_prefix }}/"
     creates: "{{ cortex.install_prefix }}/thehive-{{ thehive.version }}"
     remote_src: True
-  notify: chown cortex directory
+
+- name: chown cortex directory
+  file:
+    dest: "{{ cortex.install_prefix }}/cortex-{{ cortex.version }}"
+    state: directory
+    owner: cortex
+    group: cortex
+    recurse: yes
 
 - name: Make a symlink for Cortex
   file:
@@ -101,6 +109,13 @@
     state: directory
     mode: 0770
 
+- name: Trick in to thinking el6 is sysvinit
+  set_fact:
+    ansible_service_mgr: 'sysvinit'
+  when:
+    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    - ansible_lsb.major_release|int == 6
+
 - name: Copy in systemd init script for Cortex
   template:
     src: 'cortex.service.j2'
@@ -114,11 +129,18 @@
     dest: /etc/init/cortex.conf
   when: ansible_service_mgr == 'upstart'
 
+- name: Copy in sysvinit script for Cortex
+  template:
+    src: 'cortex.j2'
+    dest: /etc/init.d/cortex
+  when: ansible_service_mgr == 'sysvinit'
+
 - name: Copy in test config
   template:
     src: 'application.conf.j2'
     dest: '/etc/cortex/application.conf'
   notify: restart cortex
+
 
 - name: Enable services for systemd
   service: name=cortex state=started enabled=true daemon_reload=yes
@@ -127,3 +149,7 @@
 - name: Enable services for upstart
   service: name=cortex state=started enabled=true
   when: ansible_service_mgr == 'upstart'
+
+- name: Enable services for sysvinit
+  service: name=cortex state=started enabled=true
+  when: ansible_service_mgr == 'sysvinit'
