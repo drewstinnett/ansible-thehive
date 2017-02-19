@@ -106,6 +106,13 @@
     src: 'cortex.service.j2'
     dest: /usr/lib/systemd/system/cortex.service
   notify: reload systemd
+  when: ansible_service_mgr == 'systemd'
+
+- name: Copy in upstart init script for Cortex
+  template:
+    src: 'cortex.conf.j2'
+    dest: /etc/init/upstart.conf
+  when: ansible_service_mgr == 'upstart'
 
 - name: Copy in test config
   template:
