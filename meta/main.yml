@@ -23,10 +23,10 @@ galaxy_info:
       versions:
 #      - 6
        - 7
-#   - name: Ubuntu
-#     versions:
-#      - xenial
-#      - trusty
+    - name: Ubuntu
+      versions:
+       - xenial
+       - trusty
   galaxy_tags:
     - thehive
     - hive

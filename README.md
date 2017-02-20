@@ -16,6 +16,5 @@ See defaults/main.yml for Variables
 
 ## Supported Platforms
 * CentOS/RHEL 7
-* CentOS/RHEL 6
 * Ubuntu 14.04
 * Ubuntu 16.04

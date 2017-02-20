@@ -9,8 +9,8 @@ env:
       version: 14.04
     - distribution: ubuntu
       version: 16.04
-    - distribution: centos
-      version: 6
+#   - distribution: centos
+#     version: 6
     - distribution: centos
       version: 7
 
