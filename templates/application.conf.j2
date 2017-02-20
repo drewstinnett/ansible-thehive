@@ -6,6 +6,7 @@ play.crypto.secret="{{ thehive.play.crypto.secret }}"
 {% if thehive.auth is defined %}
   ## Auth Settings
   auth {
+    type = [{{ thehive.auth.type}}]
     {{ thehive.auth.type }} {
         {% if thehive.auth.options is defined %}
         {% for k, v in thehive.auth.options.iteritems() -%}
