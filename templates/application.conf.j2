@@ -3,3 +3,53 @@
 # The secret key is used to secure cryptographics functions.
 # If you deploy your application to several instances be sure to use the same key!
 play.crypto.secret="{{ thehive.play.crypto.secret }}"
+{% if thehive.auth is defined %}
+  ## Auth Settings
+  auth {
+    {{ thehive.auth.type }} {
+        {% if thehive.auth.options is defined %}
+        {% for k, v in thehive.auth.options.iteritems() -%}
+          {{ k }}="{{ v }}"
+        {% endfor %}
+        {% endif %}
+    }
+  }
+{% endif %}
+
+{% if thehive.cortex_servers is defined %}
+play.modules.enabled += connectors.cortex.CortexConnector
+cortex {
+  {% for cortex_server_name, cortex_server_options in thehive.cortex_servers.iteritems() %}
+  "{{ cortex_server_name }}" {
+    {% for k, v in cortex_server_options.iteritems() -%}
+      {{ k }}="{{ v }}"
+    {% endfor %}
+
+  }
+  {% endfor %}
+}
+{% endif %}
+
+{% if thehive.misp_servers is defined %}
+play.modules.enabled += connectors.misp.MispConnector
+misp {
+  {% for misp_server_name, misp_server_options in thehive.misp_servers.iteritems() %}
+  "{{ misp_server_name }}" {
+    {% for k, v in misp_server_options.iteritems() -%}
+      {% if k == 'tags' %}
+        {{ k }}={{ v|to_json}}
+      {% else %}
+        {{ k }}="{{ v }}"
+      {% endif %}
+    {% endfor %}
+
+  }
+  {% endfor %}
+
+  {% if thehive.misp_options is defined %}
+    {% for k, v in thehive.misp_options.iteritems() -%}
+      {{ k }}="{{ v }}"
+    {% endfor %}
+  {% endif %}
+}
+{% endif %}
