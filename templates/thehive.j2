@@ -1,20 +1,20 @@
 #!/bin/sh -e
 ### BEGIN INIT INFO
-# Provides:          cortex
+# Provides:          thehive
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Cortex: a FOSS Information Security Incident Management Platform
+# Short-Description: TheHive: a FOSS Information Security Incident Management Platform
 ### END INIT INFO
 
-NAME=cortex
-DAEMONDIR={{ cortex.install_prefix }}/cortex
-DAEMON=$DAEMONDIR/bin/cortex
-PIDDIR=/var/run/cortex
+NAME=thehive
+DAEMONDIR={{ thehive.install_prefix }}/thehive
+DAEMON=$DAEMONDIR/bin/thehive
+PIDDIR=/var/run/thehive
 PIDFILE=$PIDDIR/pid
-DAEMONUSER=cortex
-CONFIGFILE=/etc/cortex/application.conf
+DAEMONUSER=thehive
+CONFIGFILE=/etc/thehive/application.conf
 DAEMON_OPTS=
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
@@ -53,8 +53,8 @@ case "$1" in
   start)
     check_for_upstart 1
     check_config_file
-    log_daemon_msg "Starting Cortex" $NAME || true
-    if start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --chdir $DAEMONDIR --exec $DAEMON -- -Dconfig.file=$CONFIGFILE -Dhttp.address={{ cortex.http.address }} -Dhttp.port={{ cortex.http.port }} -Dpidfile.path=$PIDFILE $DAEMON_OPTS
+    log_daemon_msg "Starting TheHive" $NAME || true
+    if start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --chdir $DAEMONDIR --exec $DAEMON -- -Dconfig.file=$CONFIGFILE -Dhttp.address={{ thehive.http.address }} -Dhttp.port={{ thehive.http.port }} -Dpidfile.path=$PIDFILE $DAEMON_OPTS
     then
       log_end_msg 0 || true
     else
@@ -64,7 +64,7 @@ case "$1" in
 
   stop)
     check_for_upstart 1
-    log_daemon_msg "Stopping Cortex" $NAME || true
+    log_daemon_msg "Stopping TheHive" $NAME || true
     if start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
     then
       log_end_msg 0 || true
@@ -85,6 +85,6 @@ case "$1" in
     ;;
 
   *)
-    log_action_msg "Usage: /etc/init.d/cortex {start|stop|restart|status}" || true
+    log_action_msg "Usage: /etc/init.d/thehive {start|stop|restart|status}" || true
     exit 1
 esac

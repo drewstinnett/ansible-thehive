@@ -2,20 +2,4 @@
 # ~~~~~
 # The secret key is used to secure cryptographics functions.
 # If you deploy your application to several instances be sure to use the same key!
-play.crypto.secret="{{ cortex.play.crypto.secret }}"
-
-analyzer {
-  path = "{{ cortex.install_prefix }}/{{ cortex.analyzer.path }}"
-
-  config {
-  {% if analyzers is defined %}
-  {% for analyzer, config in cortex.analyzers.iteritems() -%}
-  {{ analyzer }} {
-      {% for k, v in config.iteritems() -%}
-        {{ k }}="{{ v }}"
-      {% endfor %}
-  }
-  {% endfor %}
-  {% endif %}
-  }
-}
+play.crypto.secret="{{ thehive.play.crypto.secret }}"

@@ -25,124 +25,92 @@
   apt: name=openjdk-8-jre-headless state=present update_cache=yes
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: Create cortex group
+- name: Create thehive group
   group:
-    name: cortex
+    name: thehive
     state: present
 
-- name: Create cortex user
+- name: Create thehive user
   user:
-    name: cortex
-    comment: "Cortex Service Account"
-    group: cortex
+    name: thehive
+    comment: "TheHive Service Account"
+    group: thehive
 
 - name: Make sure run directories exist
   file:
-    path: /var/run/cortex
-    owner: cortex
+    path: /var/run/thehive
+    owner: thehive
     state: directory
 
-- name: Get Installer for hive and cortex {{ thehive.version }}
+- name: Get Installer for hive and thehive {{ thehive.version }}
   get_url:
-    url: https://dl.bintray.com/cert-bdf/thehive/thehive-cortex-{{ thehive.version }}.zip
-    dest: "{{ cortex.install_prefix }}/thehive-cortex-{{ thehive.version }}.zip"
+    url: https://dl.bintray.com/cert-bdf/thehive/thehive-{{ thehive.version }}.zip
+    dest: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}.zip"
     mode: 0440
-
-- name: Checkout Cortex Analyzers git forcefully
-  git:
-    repo: https://github.com/CERT-BDF/Cortex-Analyzers
-    dest: "{{ cortex.install_prefix }}/Cortex-Analyzers"
-    force: yes
-  when: "{{ cortex.be_destructive }}"
-
-- name: Checkout Cortex Analyzers git
-  git:
-    repo: https://github.com/CERT-BDF/Cortex-Analyzers
-    dest: "{{ cortex.install_prefix }}/Cortex-Analyzers"
-    update: no
-  when: not {{ cortex.be_destructive }}
-
-- name: Remove Bad analyzers
-  file:
-    path: "{{ cortex.install_prefix }}/{{ cortex.analyzer.path }}/{{ item }}"
-    state: absent
-    force: yes
-  with_items: "{{ cortex.remove_analyzers }}"
-  when: cortex.remove_analyzers is defined
-  notify: restart cortex
-
-- name: Install Python Cortex Extensions
-  pip:
-    name: cortexutils
-
-- name: Install Additional Python Modules
-  pip:
-    name: "{{ item }}"
-  with_items: "{{ cortex.python_modules }}"
 
 - name: Extract files
   unarchive:
-    src: "{{ cortex.install_prefix }}/thehive-cortex-{{ thehive.version }}.zip"
-    dest: "{{ cortex.install_prefix }}/"
-    creates: "{{ cortex.install_prefix }}/thehive-{{ thehive.version }}"
+    src: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}.zip"
+    dest: "{{ thehive.install_prefix }}/"
+    creates: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}"
     remote_src: True
 
-- name: chown cortex directory
+- name: chown thehive directory
   file:
-    dest: "{{ cortex.install_prefix }}/cortex-{{ cortex.version }}"
+    dest: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}"
     state: directory
-    owner: cortex
-    group: cortex
+    owner: thehive
+    group: thehive
     recurse: yes
 
-- name: Make a symlink for Cortex
+- name: Make a symlink for TheHive
   file:
-    src: "{{ cortex.install_prefix }}/cortex-{{ cortex.version }}"
-    dest: "{{ cortex.install_prefix }}/cortex"
+    src: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}"
+    dest: "{{ thehive.install_prefix }}/thehive"
     state: link
 
-- name: Make an etc directory for Cortex
+- name: Make an etc directory for TheHive
   file:
-    path: /etc/cortex
-    owner: cortex
-    group: cortex
+    path: /etc/thehive
+    owner: thehive
+    group: thehive
     state: directory
     mode: 0770
 
-- name: Copy in systemd init script for Cortex
+- name: Copy in systemd init script for TheHive
   template:
-    src: 'cortex.service.j2'
-    dest: /etc/systemd/system/cortex.service
+    src: 'thehive.service.j2'
+    dest: /etc/systemd/system/thehive.service
   notify: reload systemd
   when: ansible_service_mgr == 'systemd'
 
-- name: Copy in upstart init script for Cortex
+- name: Copy in upstart init script for TheHive
   template:
-    src: 'cortex.conf.j2'
-    dest: /etc/init/cortex.conf
+    src: 'thehive.conf.j2'
+    dest: /etc/init/thehive.conf
   when: ansible_service_mgr == 'upstart'
 
-- name: Copy in sysvinit script for Cortex
+- name: Copy in sysvinit script for TheHive
   template:
-    src: 'cortex.j2'
-    dest: /etc/init.d/cortex
+    src: 'thehive.j2'
+    dest: /etc/init.d/thehive
   when: ansible_service_mgr == 'sysvinit'
 
 - name: Copy in test config
   template:
     src: 'application.conf.j2'
-    dest: '/etc/cortex/application.conf'
-  notify: restart cortex
+    dest: '/etc/thehive/application.conf'
+  notify: restart thehive
 
 
 - name: Enable services for systemd
-  service: name=cortex state=started enabled=true daemon_reload=yes
+  service: name=thehive state=started enabled=true daemon_reload=yes
   when: ansible_service_mgr == 'systemd'
 
 - name: Enable services for upstart
-  service: name=cortex state=started enabled=true
+  service: name=thehive state=started enabled=true
   when: ansible_service_mgr == 'upstart'
 
 - name: Enable services for sysvinit
-  service: name=cortex state=started enabled=true
+  service: name=thehive state=started enabled=true
   when: ansible_service_mgr == 'sysvinit'

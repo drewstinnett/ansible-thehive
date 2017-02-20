@@ -1,7 +1,7 @@
-# cortex - a FOSS Information Security Incident Management Platform
+# thehive - a FOSS Information Security Incident Management Platform
 #
 
-description	"Cortex"
+description	"TheHive"
 
 start on runlevel [2345]
 stop on runlevel [!2345]
@@ -11,16 +11,16 @@ respawn limit 10 5
 umask 022
 
 
-env DAEMON={{ cortex.install_prefix }}/cortex/bin/cortex
-env PIDFILE=/var/run/cortex.pid
-env DAEMONUSER=cortex
-env CONFIGFILE=/etc/cortex/application.conf
+env DAEMON={{ thehive.install_prefix }}/thehive/bin/thehive
+env PIDFILE=/var/run/thehive.pid
+env DAEMONUSER=thehive
+env CONFIGFILE=/etc/thehive/application.conf
 env DAEMON_OPTS=
-env DEFAULTFILE=/etc/default/cortex
+env DEFAULTFILE=/etc/default/thehive
 
 
 pre-start script
-    echo Starting Cortex
+    echo Starting TheHive
     if [ -f "$DEFAULTFILE" ]; then
         . "$DEFAULTFILE"
     fi
@@ -44,5 +44,5 @@ end script
 
 script
     cd $(dirname $DAEMON)/..
-    $DAEMON -Dconfig.file=$CONFIGFILE -Dhttp.port={{ cortex.http.port }} -Dhttp.address={{ cortex.http.address }} -Dpidfile.path=$PIDFILE $DAEMON_OPTS
+    $DAEMON -Dconfig.file=$CONFIGFILE -Dhttp.port={{ thehive.http.port }} -Dhttp.address={{ thehive.http.address }} -Dpidfile.path=$PIDFILE $DAEMON_OPTS
 end script

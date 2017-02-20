@@ -1,23 +1,23 @@
 [Unit]
-Description=Cortex
-Documentation=https://cortex-project.org
+Description=TheHive
+Documentation=https://thehive-project.org
 Wants=network-online.target
 After=network-online.target
 
 [Service]
-Environment=PID_DIR=/var/run/cortex
-WorkingDirectory={{ cortex.install_prefix }}/cortex
+Environment=PID_DIR=/var/run/thehive
+WorkingDirectory={{ thehive.install_prefix }}/thehive
 
-User=cortex
-Group=cortex
+User=thehive
+Group=thehive
 
-RuntimeDirectory=cortex
+RuntimeDirectory=thehive
 RuntimeDirectoryMode=0750
 
-ExecStart={{ cortex.install_prefix }}/cortex/bin/cortex \
-                        -Dconfig.file=/etc/cortex/application.conf \
-                        -Dhttp.address={{ cortex.http.address }}\
-                        -Dhttp.port={{ cortex.http.port }} \
+ExecStart={{ thehive.install_prefix }}/thehive/bin/thehive \
+                        -Dconfig.file=/etc/thehive/application.conf \
+                        -Dhttp.address={{ thehive.http.address }}\
+                        -Dhttp.port={{ thehive.http.port }} \
                         -Dpidfile.path=${PID_DIR}/pid
 
 StandardOutput=journal

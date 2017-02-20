@@ -1,10 +1,10 @@
-# ansible-cortex
+# ansible-thehive
 
-![Build Status](https://travis-ci.org/drewstinnett/ansible-cortex.svg?branch=master)
+![Build Status](https://travis-ci.org/drewstinnett/ansible-thehive.svg?branch=master)
 
 ## Description
 
-Deploy an instance of a cortex analyzer.  This Ansible script deploys the code from from [CERT-BDF](https://github.com/CERT-BDF/Cortex)
+Deploy an instance of a TheHive.  This Ansible script deploys the code from from [CERT-BDF](https://github.com/CERT-BDF/TheHive)
 
 ## Requirements
 

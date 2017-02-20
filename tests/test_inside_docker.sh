@@ -1,9 +1,8 @@
 #!/bin/bash
 set -xe
-
 distribution=$1
 version=$2
-module=ansible-cortex
+module=ansible-thehive
 if [ "${distribution}" == 'centos' ] && [ "${version}" == '7' ]; then
   init="/usr/lib/systemd/systemd"
   run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
@@ -26,7 +25,7 @@ docker build --rm=true --file=tests/Dockerfile.${distribution}-${version} --tag=
 container_id=$(mktemp)
 
 # Run container in detached state
-docker run --detach --volume="${PWD}":/etc/ansible/roles/${module}:ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"
+docker run --detach ${DOCKER_OPTS} --volume="${PWD}":/etc/ansible/roles/${module}:ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"
 
 # Display Ansible version
 docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible --version
@@ -43,5 +42,7 @@ docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/${modul
 || (echo 'Idempotence test: fail' && exit 1) \
 
 # Clean up
-docker stop "$(cat ${container_id})"
-docker rm -v "$(cat ${container_id})"
+if [ "${LEAVE_RUNNING}" != "yes" ]; then
+  docker stop "$(cat ${container_id})"
+  docker rm -v "$(cat ${container_id})"
+fi

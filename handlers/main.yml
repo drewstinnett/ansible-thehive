@@ -1,9 +1,9 @@
-- name: restart cortex
-  service: name=cortex state=restarted
+- name: restart thehive
+  service: name=thehive state=restarted
   notify: wait for the service to come up
 
 - name: reload systemd
   shell: systemctl daemon-reload
 
 - name: wait for the service to come up
-  wait_for: port={{ cortex.http.port }} timeout=30
+  wait_for: port={{ thehive.http.port }} timeout=30

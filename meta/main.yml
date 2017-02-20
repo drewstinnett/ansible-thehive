@@ -1,11 +1,11 @@
 galaxy_info:
   author: Drew Stinnett
-  description: Deploy an instance of a cortex analyzer.
+  description: Deploy an instance of TheHive software
   company: Duke University
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
-  issue_tracker_url: https://github.com/drewstinnett/ansible-cortex/issues
+  issue_tracker_url: https://github.com/drewstinnett/ansible-thehive/issues
 
   # Some suggested licenses:
   # - BSD (default)
@@ -21,14 +21,15 @@ galaxy_info:
   platforms:
     - name: EL
       versions:
-       - 6
+#      - 6
        - 7
-    - name: Ubuntu
-      versions:
-       - xenial
-       - trusty
+#   - name: Ubuntu
+#     versions:
+#      - xenial
+#      - trusty
   galaxy_tags:
-    - cortex
     - thehive
+    - hive
+    - cortex
 
 dependencies: []
