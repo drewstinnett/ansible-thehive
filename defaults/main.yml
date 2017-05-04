@@ -1,6 +1,6 @@
 ---
 thehive:
-  version: 2.10.0
+  version: 2.10.2
   be_destructive: no
   install_prefix: '/opt/'
   play:
