@@ -42,31 +42,19 @@
     owner: thehive
     state: directory
 
-- name: Get Installer for hive and thehive {{ thehive.version }}
-  get_url:
-    url: https://dl.bintray.com/cert-bdf/thehive/thehive-{{ thehive.version }}.zip
-    dest: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}.zip"
-    mode: 0440
-
 - name: Extract files
   unarchive:
-    src: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}.zip"
-    dest: "{{ thehive.install_prefix }}/"
-    creates: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}"
-    remote_src: True
-
-- name: chown thehive directory
-  file:
-    dest: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}"
-    state: directory
+    src: https://dl.bintray.com/cert-bdf/thehive/thehive-{{ thehive.version }}.zip
+    dest: "{{ thehive.install_prefix }}"
+    creates: "{{ thehive.install_prefix }}thehive-{{ thehive.version }}"
     owner: thehive
     group: thehive
-    recurse: yes
+    remote_src: True
 
 - name: Make a symlink for TheHive
   file:
-    src: "{{ thehive.install_prefix }}/thehive-{{ thehive.version }}"
-    dest: "{{ thehive.install_prefix }}/thehive"
+    src: "{{ thehive.install_prefix }}thehive-{{ thehive.version }}/"
+    dest: "{{ thehive.install_prefix }}thehive"
     state: link
 
 - name: Make an etc directory for TheHive
