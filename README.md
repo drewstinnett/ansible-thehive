@@ -4,7 +4,7 @@
 
 ## Description
 
-Deploy an instance of a TheHive.  This Ansible script deploys the code from from [CERT-BDF](https://github.com/CERT-BDF/TheHive)
+Deploy an instance of TheHive.  This Ansible script deploys the code from [CERT-BDF](https://github.com/CERT-BDF/TheHive).
 
 ## Requirements
 
